@@ -1,0 +1,129 @@
+﻿#include "dialog.h"
+#include "ui_dialog.h"
+
+#include <QDateTime>
+#include <QString>
+
+Dialog::Dialog(QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::Dialog)
+{
+    ui->setupUi(this);
+
+    fTimer = new QTimer(this);
+//    fTimer ->stop();
+    fTimer ->setInterval(1000);
+    connect(fTimer,SIGNAL(timeout()),this,SLOT(on_timer_timeout()));
+}
+
+Dialog::~Dialog()
+{
+    delete ui;
+}
+
+void Dialog::on_timer_timeout()
+{
+    QTime curTime = QTime::currentTime();
+    ui->LCDHour->display(curTime.hour());
+    ui->LCDMin->display(curTime.minute());
+    ui->LCDSec->display(curTime.second());
+    int va = ui->progressBar->value();
+    va++;
+    if(va>100)
+        va = 0;
+    ui->progressBar->setValue(va);
+}
+
+
+
+void Dialog::on_btnGetTime_clicked()
+{
+    QDateTime curDateTime = QDateTime::currentDateTime();
+    ui->timeEdit->setTime(curDateTime.time());
+    ui->editTime->setText(curDateTime.toString("hh:mm:ss"));
+
+    ui->dateEdit->setDate(curDateTime.date());
+    ui->editDate->setText(curDateTime.toString("yyyy-MM-dd"));
+
+    ui->dateTimeEdit->setDateTime(curDateTime);
+    ui->editDateTime->setText(curDateTime.toString("yyyy-MM-dd hh:mm:ss"));
+}
+
+void Dialog::on_calendarWidget_selectionChanged()
+{
+    QDate dt=ui->calendarWidget->selectedDate();
+    QString str = dt.toString("yyyy年M月d日");
+    ui->editCalendar->setText(str);
+}
+
+void Dialog::on_btnSetTime_clicked()
+{
+    QString str = ui->editTime->text();
+    str=str.trimmed();
+    if(!str.isEmpty())
+    {
+        QTime tm = QTime::fromString(str,"hh:mm:ss");
+        ui->timeEdit->setTime(tm);
+    }
+}
+
+
+
+void Dialog::on_btnSetDate_clicked()
+{
+    QString str = ui->editTime->text();
+    str = str.trimmed();
+    if(!str.isEmpty())
+    {
+        QDate dt = QDate::fromString(str,"yyyy-MM-dd");
+        ui->dateEdit->setDate(dt);
+    }
+}
+
+void Dialog::on_btnSetDateTime_clicked()
+{
+    QString str = ui->editDateTime->text();
+    str = str.trimmed();
+    if(!str.isEmpty())
+    {
+        QDateTime datetime = QDateTime::fromString(str,"yyyy-MM-dd hh:mm:ss");
+        ui->dateTimeEdit->setDateTime(datetime);
+    }
+}
+
+
+
+void Dialog::on_btnSetIntv_clicked()
+{
+    fTimer->setInterval(ui->spinBoxIntv->value());
+}
+
+
+
+void Dialog::on_btnStart_clicked()
+{
+//    fTimer->start();
+    fTimeCounter.start();
+    ui->btnStart->setEnabled(false);
+    ui->btnStop->setEnabled(true);
+    ui->btnSetIntv->setEnabled(false);
+}
+
+void Dialog::on_btnStop_clicked()
+{
+    fTimer->stop();
+
+    int tmMsec = fTimeCounter.elapsed();
+    int ms = tmMsec%1000;
+    int sec = tmMsec/1000;
+
+
+//    QString str = QString::asprintf("%d 秒 %d 毫秒",sec,ms);
+    QString str=QString::asprintf("流逝时间：%d 秒，%d 毫秒",sec,ms);
+
+    ui->LabElapsTime->setText(str);
+
+    ui->btnStart->setEnabled(true);
+    ui->btnStop->setEnabled(false);
+    ui->btnSetIntv->setEnabled(true);
+}

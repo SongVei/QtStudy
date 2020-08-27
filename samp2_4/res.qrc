@@ -1,0 +1,34 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>image/41590.png</file>
+        <file>image/519676.png</file>
+        <file>image/530718.png</file>
+        <file>image/567724.png</file>
+        <file>image/573007.png</file>
+        <file>image/573008.png</file>
+        <file>image/1073578.png</file>
+        <file>image/1092675.png</file>
+        <file>image/1092823.png</file>
+        <file>image/1092855.png</file>
+        <file>image/1093080.png</file>
+        <file>image/1098141.png</file>
+        <file>image/1098233.png</file>
+        <file>image/1098416.png</file>
+        <file>image/1103533.png</file>
+        <file>image/1116132.png</file>
+        <file>image/1116511.png</file>
+        <file>image/1116783.png</file>
+        <file>image/1117651.png</file>
+        <file>image/1137213.png</file>
+        <file>image/1169203.png</file>
+        <file>image/1170223.png</file>
+        <file>image/1194752.png</file>
+        <file>image/1225511.png</file>
+        <file>image/1230182.png</file>
+        <file>image/1287123.png</file>
+        <file>image/www.easyicon.net.txt</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>x.ico</file>
+    </qresource>
+</RCC>
